@@ -8,6 +8,7 @@ namespace RepoTesting
         {
             var test = new TestClass.TestClass();
             Console.WriteLine(test.Hello());
+            Console.WriteLine("edit!");
         }
     }
 }
