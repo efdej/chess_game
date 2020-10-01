@@ -125,5 +125,10 @@ namespace Chess
         {
             BoardPanel.Show();
         }
+
+        private void MenuItemAboutChess_Click(object sender, EventArgs e)
+        {
+            MessageBox.Show("Chess - A chess game\n\nBy d4n & efdej.", "About", MessageBoxButtons.OK, MessageBoxIcon.Information);
+        }
     }
 }
