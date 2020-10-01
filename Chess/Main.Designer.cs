@@ -185,13 +185,13 @@
             // 
             this.menuItem.Index = 0;
             this.menuItem.Text = "New Game";
-            this.menuItem.Click += new System.EventHandler(this.menuItemNewGame_Click);
+            this.menuItem.Click += new System.EventHandler(this.MenuItemNewGame_Click);
             // 
             // menuItemExit
             // 
             this.menuItemExit.Index = 1;
             this.menuItemExit.Text = "Exit";
-            this.menuItemExit.Click += new System.EventHandler(this.menuItemExit_Click);
+            this.menuItemExit.Click += new System.EventHandler(this.MenuItemExit_Click);
             // 
             // menuItemAbout
             // 
