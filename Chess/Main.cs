@@ -25,7 +25,16 @@ namespace Chess
 
         private void Chess_Load(object sender, EventArgs e)
         {
-
+            foreach (Control c in this.BoardPanel.Controls)
+            {
+                if (c is PictureBox)
+                {
+                    c.Click += Pieces_Click;
+                    c.MouseDown += Pieces_MouseDown;
+                    c.MouseMove += Pieces_MouseMove;
+                    c.MouseUp += Pieces_MouseUp;
+                }
+            }
         }
 
         private void Pieces_Click(object sender, EventArgs e)
@@ -56,6 +65,7 @@ namespace Chess
                 BoardPanel.Invalidate();
             }
         }
+
         //MouseUp event handler for all your controls (on the tableLayoutPanel1)
         private void Pieces_MouseUp(object sender, MouseEventArgs e)
         {
@@ -67,6 +77,7 @@ namespace Chess
                 _moved = false;
             }
         }
+
         //This is used to set the control on the tableLayoutPanel after releasing mouse
         private void SetControl(Control c, Point position)
         {
