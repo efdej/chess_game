@@ -39,9 +39,13 @@ namespace Chess
 
         private void Pieces_Click(object sender, EventArgs e)
         {
-            _bgColors[0, 2] = Color.Yellow;
-            _bgColors[0, 3] = Color.Yellow;
+            Control piece = sender as Control;
+            var position = BoardPanel.GetPositionFromControl(piece);
+            _bgColors[position.Column, position.Row] = Color.Yellow;
+            _bgColors[position.Column, position.Row + 1] = Color.Yellow;
             BoardPanel.Refresh();
+            _bgColors[position.Column, position.Row] = Color.Empty;
+            _bgColors[position.Column, position.Row + 1] = Color.Empty;
         }
 
         //MouseDown event handler for all your controls (on the tableLayoutPanel1)
@@ -86,10 +90,13 @@ namespace Chess
             if (!keyValue.Equals(default(KeyValuePair<TableLayoutPanelCellPosition, Rectangle>)))
             {
                 var target = BoardPanel.GetControlFromPosition(keyValue.Key.Column, keyValue.Key.Row) as PictureBox;
-                var temp = c.BackgroundImage;
-                c.BackgroundImage = target.BackgroundImage;
-                target.BackgroundImage = temp;
-                //BoardPanel.SetCellPosition(c, keyValue.Key);
+                if (target != null)
+                {
+                    var temp = c.BackgroundImage;
+                    c.BackgroundImage = target.BackgroundImage;
+                    target.BackgroundImage = temp;
+                    //BoardPanel.SetCellPosition(c, keyValue.Key);
+                }
             }
         }
 
