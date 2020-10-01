@@ -25,7 +25,16 @@ namespace Chess
 
         private void Chess_Load(object sender, EventArgs e)
         {
-
+            foreach (Control c in this.BoardPanel.Controls)
+            {
+                if (c is PictureBox)
+                {
+                    c.Click += Pieces_Click;
+                    c.MouseDown += Pieces_MouseDown;
+                    c.MouseMove += Pieces_MouseMove;
+                    c.MouseUp += Pieces_MouseUp;
+                }
+            }
         }
 
         private void Pieces_Click(object sender, EventArgs e)
@@ -56,25 +65,31 @@ namespace Chess
                 BoardPanel.Invalidate();
             }
         }
+
         //MouseUp event handler for all your controls (on the tableLayoutPanel1)
         private void Pieces_MouseUp(object sender, MouseEventArgs e)
         {
-            Control piece = sender as Control;
+            PictureBox piece = sender as PictureBox;
             if (_moved)
             {
-                SetControl(piece, e.Location);
+                SwapImages(piece, e.Location);
                 piece.Parent = BoardPanel;
                 _moved = false;
             }
         }
+
         //This is used to set the control on the tableLayoutPanel after releasing mouse
-        private void SetControl(Control c, Point position)
+        private void SwapImages(PictureBox c, Point position)
         {
             Point localPoint = BoardPanel.PointToClient(c.PointToScreen(position));
             var keyValue = dict.FirstOrDefault(e => e.Value.Contains(localPoint));
             if (!keyValue.Equals(default(KeyValuePair<TableLayoutPanelCellPosition, Rectangle>)))
             {
-                BoardPanel.SetCellPosition(c, keyValue.Key);
+                var target = BoardPanel.GetControlFromPosition(keyValue.Key.Column, keyValue.Key.Row) as PictureBox;
+                var temp = c.BackgroundImage;
+                c.BackgroundImage = target.BackgroundImage;
+                target.BackgroundImage = temp;
+                //BoardPanel.SetCellPosition(c, keyValue.Key);
             }
         }
 
@@ -82,7 +97,6 @@ namespace Chess
         {
             dict[new TableLayoutPanelCellPosition(e.Column, e.Row)] = e.CellBounds;
             /*
-            
             if (moved)
             {
                 if (e.CellBounds.Contains(BoardPanel.PointToClient(MousePosition)))
@@ -93,7 +107,6 @@ namespace Chess
             */
             using (var b = new SolidBrush(_bgColors[e.Column, e.Row]))
             {
-
                 e.Graphics.FillRectangle(b, e.CellBounds);
             }
         }
