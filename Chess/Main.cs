@@ -10,9 +10,8 @@ namespace Chess
     {
         // This is used to store the CellBounds together with the Cell position
         // so that we can find the Cell position later (after releasing mouse).
-        readonly private Dictionary<TableLayoutPanelCellPosition, Rectangle> dict = new Dictionary<TableLayoutPanelCellPosition, Rectangle>();
+        readonly private Dictionary<TableLayoutPanelCellPosition, Rectangle> _dict = new Dictionary<TableLayoutPanelCellPosition, Rectangle>();
         readonly private Color[,] _bgColors = new Color[8, 8];
-        // private bool _gameLoaded = false;
         private Point _downPoint;
         private bool _moved;
 
@@ -86,11 +85,10 @@ namespace Chess
         private void SwapImages(PictureBox c, Point position)
         {
             Point localPoint = BoardPanel.PointToClient(c.PointToScreen(position));
-            var keyValue = dict.FirstOrDefault(e => e.Value.Contains(localPoint));
+            var keyValue = _dict.FirstOrDefault(e => e.Value.Contains(localPoint));
             if (!keyValue.Equals(default(KeyValuePair<TableLayoutPanelCellPosition, Rectangle>)))
             {
-                var target = BoardPanel.GetControlFromPosition(keyValue.Key.Column, keyValue.Key.Row) as PictureBox;
-                if (target != null)
+                if (BoardPanel.GetControlFromPosition(keyValue.Key.Column, keyValue.Key.Row) is PictureBox target)
                 {
                     var temp = c.BackgroundImage;
                     c.BackgroundImage = target.BackgroundImage;
@@ -102,16 +100,16 @@ namespace Chess
 
         private void BoardPanel_CellPaint(object sender, TableLayoutCellPaintEventArgs e)
         {
-            dict[new TableLayoutPanelCellPosition(e.Column, e.Row)] = e.CellBounds;
-            /*
-            if (moved)
+            _dict[new TableLayoutPanelCellPosition(e.Column, e.Row)] = e.CellBounds;
+            
+            if (_moved)
             {
                 if (e.CellBounds.Contains(BoardPanel.PointToClient(MousePosition)))
                 {
                     e.Graphics.FillRectangle(Brushes.Yellow, e.CellBounds);
                 }
             }
-            */
+            
             using (var b = new SolidBrush(_bgColors[e.Column, e.Row]))
             {
                 e.Graphics.FillRectangle(b, e.CellBounds);
@@ -126,7 +124,6 @@ namespace Chess
         private void MenuItemNewGame_Click(object sender, EventArgs e)
         {
             BoardPanel.Show();
-            // _gameLoaded = true;
         }
     }
 }
