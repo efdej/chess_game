@@ -204,7 +204,6 @@
             // 
             this.menuItemAboutChess.Index = 0;
             this.menuItemAboutChess.Text = "About Chess";
-            this.menuItemAboutChess.Click += new System.EventHandler(this.MenuItemAboutChess_Click);
             // 
             // A8
             // 
